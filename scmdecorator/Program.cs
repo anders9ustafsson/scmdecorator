@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Text;
 
@@ -38,12 +39,12 @@ namespace scmdecorator
             string scmFolder;
             if (args.Length == 1)
             {
-                scmFolder = args[0];
+                scmFolder = args[0].Trim('"');
             }
             else
             {
                 Console.Write("Enter name of SCM folder: ");
-                scmFolder = Console.ReadLine() ?? String.Empty;
+                scmFolder = (Console.ReadLine() ?? String.Empty).Trim('"');
             }
 
             ScmInfo currentScmInfo;
@@ -77,10 +78,11 @@ namespace scmdecorator
                                                    "ConfirmFileOp=0{0}" +
                                                    "NoSharing=1{0}" +
                                                    (iconExists ? "IconFile={1}{0}IconIndex=0{0}" : String.Empty) +
-                                                   "InfoTip={2} version controlled folder.", 
+                                                   "InfoTip=Version controlled by {2}.", 
                                                    Environment.NewLine, currentScmInfo.Icon, currentScmInfo.Scm);
 
                 var destDesktopIni = Path.Combine(scmFolder, "desktop.ini");
+                if (File.Exists(destDesktopIni)) File.SetAttributes(destDesktopIni, FileAttributes.Normal);
                 File.WriteAllText(destDesktopIni, desktopIniText);
                 File.SetAttributes(destDesktopIni, File.GetAttributes(destDesktopIni) | FileAttributes.Hidden);
 
@@ -90,12 +92,22 @@ namespace scmdecorator
                     File.Copy(currentScmInfo.Icon, destScmIcon, false);
                     File.SetAttributes(destScmIcon, File.GetAttributes(destScmIcon) | FileAttributes.Hidden);
                 }
+
+                if (PathMakeSystemFolder(scmFolder) == 0)
+                {
+                    Console.WriteLine("{0}: Warning. Could not turn '{1}' into system folder.", ApplicationName, scmFolder);
+                }
             }
             catch (Exception e)
             {
-                
-                throw;
+                Console.WriteLine("{0}: Error when decorating SCM folder, message: {1}", ApplicationName, e.Message);
+                return;
             }
+
+            Console.WriteLine("{0}: Folder '{1}' successfully decorated into {2} folder.", ApplicationName, scmFolder, currentScmInfo.Scm);
         }
+
+        [DllImport("shlwapi.dll")]
+        private static extern int PathMakeSystemFolder(string pszPath);
     }
 }

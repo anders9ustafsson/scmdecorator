@@ -1,0 +1,4 @@
+_ReSharper.scmdecorator/
+*.suo
+scmdecorator/bin/
+scmdecorator/obj/

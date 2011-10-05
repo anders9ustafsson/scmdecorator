@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 
 namespace scmdecorator
 {
     class Program
     {
-        private static readonly string ApplicationName = "scmdecorator";
+        private const string ApplicationName = "scmdecorator";
 
         private class ScmInfo
         {
@@ -58,6 +60,7 @@ namespace scmdecorator
                 if (currentScmInfo == null)
                 {
                     Console.WriteLine("{0}: Folder '{1}' does not appear to be an SCM folder; support directory is missing", ApplicationName, scmFolder);
+                    return;
                 }
             }
             catch (Exception e)
@@ -66,7 +69,33 @@ namespace scmdecorator
                 return;
             }
 
+            try
+            {
+                var iconExists = File.Exists(currentScmInfo.Icon);
+                var desktopIniText = String.Format(CultureInfo.InvariantCulture,
+                                                   "[.ShellClassInfo]{0}" +
+                                                   "ConfirmFileOp=0{0}" +
+                                                   "NoSharing=1{0}" +
+                                                   (iconExists ? "IconFile={1}{0}IconIndex=0{0}" : String.Empty) +
+                                                   "InfoTip={2} version controlled folder.", 
+                                                   Environment.NewLine, currentScmInfo.Icon, currentScmInfo.Scm);
 
+                var destDesktopIni = Path.Combine(scmFolder, "desktop.ini");
+                File.WriteAllText(destDesktopIni, desktopIniText);
+                File.SetAttributes(destDesktopIni, File.GetAttributes(destDesktopIni) | FileAttributes.Hidden);
+
+                var destScmIcon = Path.Combine(scmFolder, currentScmInfo.Icon);
+                if (iconExists && !File.Exists(destScmIcon))
+                {
+                    File.Copy(currentScmInfo.Icon, destScmIcon, false);
+                    File.SetAttributes(destScmIcon, File.GetAttributes(destScmIcon) | FileAttributes.Hidden);
+                }
+            }
+            catch (Exception e)
+            {
+                
+                throw;
+            }
         }
     }
 }

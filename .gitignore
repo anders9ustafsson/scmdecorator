@@ -2,3 +2,8 @@ _ReSharper.scmdecorator/
 *.suo
 scmdecorator/bin/
 scmdecorator/obj/
+
+/git.ico
+/desktop.ini
+*.dotCover
+*.user

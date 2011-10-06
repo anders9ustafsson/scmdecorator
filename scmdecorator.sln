@@ -3,6 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "scmdecorator", "scmdecorator\scmdecorator.csproj", "{2B277708-7F00-4EA3-AA41-E05B8B17D9DA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{20A42019-8C29-4B47-BF88-506F945A45B5}"
+	ProjectSection(SolutionItems) = preProject
+		COPYING.htm = COPYING.htm
+		README.rdoc = README.rdoc
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86

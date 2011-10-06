@@ -1,0 +1,26 @@
+= scmdecorator - Simple SCM folder decorator
+
+Copyright (c) 2011 Anders Gustafsson, Cureos AB  
+
+Licensed and distributable under the terms of the EPL 1.0 license: http://opensource.org/licenses/EPL-1.0
+
+Logos (c) 2009-2010 Open Icon Library, http://openiconlibrary.sourceforge.net/, released under CC BY-SA 3.0 license http://creativecommons.org/licenses/by-sa/3.0/
+
+
+== Summary
+
+This is a simple application for decorating version controlled folders. The application adds a short tooltip sentence indicating the software responsible for version control of the folder. Potentially, the folder icon is also changed to reflect the version control software in use.  
+
+The application is currently configured to identify Subversion, Git and Mercurial version controlled folders, but can easily be extended to support other SCM softwares as well, as long as this software requires a support directory with a specific name to be located within the version controlled folder.
+
+For the smoothest user experience, the application should preferably be run by a user with administrative rights. The application has been tested on a 64-bit Windows 7 system.
+
+Development of this application was inspired by a response to one of my StackOverflow questions from Stefan Küng, lead developer of TortoiseSVN.
+
+
+== Links
+
+* Blog post on Radiotherapy.NET http://cureos.blogspot.com
+
+* StackOverflow question http://stackoverflow.com/questions/7659658/tortoisexxx-knowing-which-scm-software-is-used-in-a-specific-development-project
+

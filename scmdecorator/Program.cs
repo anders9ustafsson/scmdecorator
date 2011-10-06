@@ -1,11 +1,15 @@
-﻿using System;
+﻿// Copyright (c) 2011 Anders Gustafsson, Cureos AB.
+// All rights reserved. This software and the accompanying materials
+// are made available under the terms of the Eclipse Public License v1.0
+// which accompanies this distribution, and is available at
+// http://www.eclipse.org/legal/epl-v10.html
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Security.AccessControl;
-using System.Text;
 
 namespace scmdecorator
 {
@@ -15,7 +19,7 @@ namespace scmdecorator
 
         private class ScmInfo
         {
-            internal string Scm;
+            internal string Name;
             internal string Folder;
             internal string Icon;
         }
@@ -23,9 +27,9 @@ namespace scmdecorator
         private static readonly List<ScmInfo> ScmInfos =
             new List<ScmInfo>
                 {
-                    new ScmInfo { Scm = "Subversion", Folder = ".svn", Icon = "svn.ico" },
-                    new ScmInfo { Scm = "Git", Folder = ".git", Icon = "git.ico" },
-                    new ScmInfo { Scm = "Mercurial", Folder = ".hg", Icon = "hg.ico" }
+                    new ScmInfo { Name = "Subversion", Folder = ".svn", Icon = "svn.ico" },
+                    new ScmInfo { Name = "Git", Folder = ".git", Icon = "git.ico" },
+                    new ScmInfo { Name = "Mercurial", Folder = ".hg", Icon = "mercurial.ico" }
                 };
 
         static void Main(string[] args)
@@ -60,7 +64,7 @@ namespace scmdecorator
                 currentScmInfo = ScmInfos.SingleOrDefault(info => dirInfo.GetDirectories(info.Folder).Length > 0);
                 if (currentScmInfo == null)
                 {
-                    Console.WriteLine("{0}: Folder '{1}' does not appear to be an SCM folder; support directory is missing", ApplicationName, scmFolder);
+                    Console.WriteLine("{0}: Folder '{1}' does not appear to be an SCM folder; SCM directory is missing", ApplicationName, scmFolder);
                     return;
                 }
             }
@@ -72,6 +76,12 @@ namespace scmdecorator
 
             try
             {
+                if (PathMakeSystemFolder(scmFolder) == 0)
+                {
+                    Console.WriteLine("{0}: Error. Could not convert '{1}' into system folder.", ApplicationName, scmFolder);
+                    return;
+                }
+
                 var iconExists = File.Exists(currentScmInfo.Icon);
                 var desktopIniText = String.Format(CultureInfo.InvariantCulture,
                                                    "[.ShellClassInfo]{0}" +
@@ -79,7 +89,7 @@ namespace scmdecorator
                                                    "NoSharing=1{0}" +
                                                    (iconExists ? "IconFile={1}{0}IconIndex=0{0}" : String.Empty) +
                                                    "InfoTip=Version controlled by {2}.", 
-                                                   Environment.NewLine, currentScmInfo.Icon, currentScmInfo.Scm);
+                                                   Environment.NewLine, currentScmInfo.Icon, currentScmInfo.Name);
 
                 var destDesktopIni = Path.Combine(scmFolder, "desktop.ini");
                 if (File.Exists(destDesktopIni)) File.SetAttributes(destDesktopIni, FileAttributes.Normal);
@@ -87,15 +97,11 @@ namespace scmdecorator
                 File.SetAttributes(destDesktopIni, File.GetAttributes(destDesktopIni) | FileAttributes.Hidden);
 
                 var destScmIcon = Path.Combine(scmFolder, currentScmInfo.Icon);
-                if (iconExists && !File.Exists(destScmIcon))
+                if (iconExists)
                 {
-                    File.Copy(currentScmInfo.Icon, destScmIcon, false);
+                    if (File.Exists(destScmIcon)) File.SetAttributes(destScmIcon, FileAttributes.Normal);
+                    File.Copy(currentScmInfo.Icon, destScmIcon, true);
                     File.SetAttributes(destScmIcon, File.GetAttributes(destScmIcon) | FileAttributes.Hidden);
-                }
-
-                if (PathMakeSystemFolder(scmFolder) == 0)
-                {
-                    Console.WriteLine("{0}: Warning. Could not turn '{1}' into system folder.", ApplicationName, scmFolder);
                 }
             }
             catch (Exception e)
@@ -104,7 +110,7 @@ namespace scmdecorator
                 return;
             }
 
-            Console.WriteLine("{0}: Folder '{1}' successfully decorated into {2} folder.", ApplicationName, scmFolder, currentScmInfo.Scm);
+            Console.WriteLine("{0}: Folder '{1}' successfully decorated into {2} folder.", ApplicationName, scmFolder, currentScmInfo.Name);
         }
 
         [DllImport("shlwapi.dll")]

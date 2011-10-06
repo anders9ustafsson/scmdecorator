@@ -25,7 +25,7 @@ If no path is specified, the application will prompt the user to enter the name 
 
 === Acknowledgements
 
-Development of this application was inspired by a response to one of my StackOverflow questions from Stefan Küng, lead developer of TortoiseSVN.
+Development of this application was inspired by a response to one of my StackOverflow questions from Stefan Kueng, lead developer of TortoiseSVN.
 
 
 == Links

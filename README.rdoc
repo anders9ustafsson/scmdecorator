@@ -9,11 +9,21 @@ Logos (c) 2009-2010 Open Icon Library, http://openiconlibrary.sourceforge.net/, 
 
 == Summary
 
-This is a simple application for decorating version controlled folders. The application adds a short tooltip sentence indicating the software responsible for version control of the folder. Potentially, the folder icon is also changed to reflect the version control software in use.  
+This is a simple console application for decorating version controlled folders. The application adds a short tooltip sentence indicating the software responsible for version control of the folder. Potentially, the folder icon is also changed to reflect the version control software in use.  
 
 The application is currently configured to identify Subversion, Git and Mercurial version controlled folders, but can easily be extended to support other SCM softwares as well, as long as this software requires a support directory with a specific name to be located within the version controlled folder.
 
 For the smoothest user experience, the application should preferably be run by a user with administrative rights. The application has been tested on a 64-bit Windows 7 system.
+
+=== Usage
+
+To run the application, open the command prompt and cd to the application directory. Type 
+
+    scmdecorator [path-to-version-controlled-folder]
+
+If no path is specified, the application will prompt the user to enter the name of the version controlled folder.
+
+=== Acknowledgements
 
 Development of this application was inspired by a response to one of my StackOverflow questions from Stefan Küng, lead developer of TortoiseSVN.
 

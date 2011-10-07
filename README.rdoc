@@ -30,7 +30,7 @@ Development of this application was inspired by a response to one of my StackOve
 
 == Links
 
-* Blog post on Radiotherapy.NET http://cureos.blogspot.com
+* Blog post on Radiotherapy.NET http://cureos.blogspot.com/2011/10/getting-grip-on-your-version-control.html
 
 * StackOverflow question http://stackoverflow.com/questions/7659658/tortoisexxx-knowing-which-scm-software-is-used-in-a-specific-development-project
 

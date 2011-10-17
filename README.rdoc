@@ -4,7 +4,7 @@ Copyright (c) 2011 Anders Gustafsson, Cureos AB
 
 Licensed and distributable under the terms of the EPL 1.0 license: http://opensource.org/licenses/EPL-1.0
 
-Git and Mercurial logos (c) 2009-2010 Open Icon Library, http://openiconlibrary.sourceforge.net/, released under CC BY-SA 3.0 license http://creativecommons.org/licenses/by-sa/3.0/
+Git and Mercurial logos (c) 2009-2010 Open Icon Library, http://openiconlibrary.sourceforge.net/, released under CC BY-SA 3.0 license http://creativecommons.org/licenses/by-sa/3.0/  
 Subversion logo (c) 2011 Apache Software Foundation, http://subversion.apache.org/, available according to the Apache Trademark Policy http://apache.org/foundation/marks/
 
 == Summary
